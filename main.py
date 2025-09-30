@@ -26,30 +26,15 @@ while True:
         current_time = now
 
         if now - upgrade_check_delay > 30:
-            print("upgrade check")
             upgrade_check_delay = now
             upgrades = driver.find_elements(by=By.CLASS_NAME, value="crate.upgrade.enabled")
             if upgrades:
                 upgrades[-1].click()
         else:
-            print("product check")
-            products = driver.find_elements(by=By.CLASS_NAME, value="product.unlocked")
-            cookies = driver.find_element(by=By.ID, value="cookies")
-
-            try:
-                cookies = int(cookies.text.split(" ")[0])
-            except ValueError:
-                cookies = int("".join(cookies.text.split(" ")[0].split(",")))
-
-
+            products = driver.find_elements(by=By.CLASS_NAME, value="product.unlocked.enabled")
 
             for product in reversed(products):
-                try:
-                    if cookies >= int(product.text.split("\n")[1]):
-                        product.click()
-                except ValueError:
-                    if cookies >= int("".join(product.text.split("\n")[1].split(","))):
-                        product.click()
+                product.click()
 
 
     if now - notification_check_delay > 10.0:
